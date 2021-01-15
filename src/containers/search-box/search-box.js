@@ -53,14 +53,22 @@ export class SearchBox extends Component {
             })
                 .then(res => res.json())
                 .then((res) => {
-                    this.addToRecentSearchKeys(searchKey);
-                    this.setState({
-                        isLoading: false,
-                        results: res.hits ? res.hits : [],
-                        errorInfo: null
-                    });
-                    if (this.state.searchKey && searchKey && this.state.searchKey !== searchKey) {
-                        this.getSearchResults();
+                    if (res && res.status && res.status === 'error') {
+                        this.setState({
+                            isLoading: false,
+                            results: [],
+                            errorInfo: { ...res }
+                        });
+                    } else {
+                        this.addToRecentSearchKeys(searchKey);
+                        this.setState({
+                            isLoading: false,
+                            results: res.hits ? res.hits : [],
+                            errorInfo: null
+                        });
+                        if (this.state.searchKey && searchKey && this.state.searchKey !== searchKey) {
+                            this.getSearchResults();
+                        }
                     }
                 }, (error) => {
                     this.setState({
@@ -74,12 +82,12 @@ export class SearchBox extends Component {
 
     addToRecentSearchKeys(key) {
         const searchKeys = this.state.recentSearchKeys;
-
         if (searchKeys.length === 5) {
-            searchKeys.shift();
+            searchKeys.pop();
         }
-        if (!searchKeys.includes(key)) {
-            searchKeys.unshift(key);
+        const trimmedKey = key && key.trim();
+        if (!searchKeys.includes(trimmedKey)) {
+            searchKeys.unshift(trimmedKey);
         }
         this.setState({ recentSearchKeys: searchKeys })
     }
@@ -121,7 +129,7 @@ export class SearchBox extends Component {
                         Loading.....
                     <img src={logo} className="App-logo slow-animation" alt="logo" />
                     </p>
-                    : errorInfo && errorInfo.message ? <p>{errorInfo.message}</p> :
+                    : errorInfo && errorInfo.message ? <p style={{ color: 'red' }}>{errorInfo.message}</p> :
                         <>
                             {searchKey ? <p>Search Results for <b>{searchKey}</b> are</p> : ""}
                             <SearchResults recipes={results} searchKey={searchKey} />

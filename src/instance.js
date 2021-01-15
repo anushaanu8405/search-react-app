@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'https://api.edamam.com/search?app_id=0c58371a&app_key=d687ac5f397565cd48c6ec567fdb2e8f'
+export const API_BASE_URL = '/search?app_id=0c58371a&app_key=d687ac5f397565cd48c6ec567fdb2e8f'
