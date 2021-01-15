@@ -1,0 +1,22 @@
+.card {
+  position: relative;
+  display: flex;
+  -webkit-box-orient: vertical;
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.card-body {
+  padding-left: 15px;
+}
+
+.card-img {
+  height: 90px;
+}
+
+.no-records-view {
+  border: 1px solid gray;
+  padding-bottom: 2px;
+  border-radius: 5px;
+}
